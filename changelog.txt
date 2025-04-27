@@ -1,0 +1,14 @@
+== Changelog ==
+= 1.1.0 =
+- Added **dynamic slide management** via the admin settings page.
+- Improved the frontend display: now **multiple slides** are supported.
+- Fixed issues with **button link functionality** not working properly.
+- Enhanced the mobile and tablet responsiveness.
+- **Bug fixes** and small UI tweaks for better user experience.
+
+= 1.0.0 =
+- Initial release of Hero Slider plugin.
+- Allows users to add a **single static image slider**.
+- Slider includes: **heading, description, and button** for each slide.
+- Customizable via **hardcoded fields** in the plugin code.
+- Includes **basic styling** for the slider, including fade-in effects and responsiveness.
