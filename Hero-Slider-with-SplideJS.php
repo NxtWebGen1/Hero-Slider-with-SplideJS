@@ -11,5 +11,35 @@
  * Author URI:        https://github.com/NxtWebGen1
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       my-basics-plugin
+ * Text Domain:       hero-slider-splide
  */
+
+
+
+
+
+ // Define global plugin path
+define('HERO_SLIDER_PLUGIN_DIR', plugin_dir_path(__FILE__));
+
+// Define global plugin URL
+define('HERO_SLIDER_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+
+
+//including the class-hero-slider.php file
+require_once HERO_SLIDER_PLUGIN_DIR . 'includes/class-hero-slider.php';
+
+
+
+//Enqueuing Styles and Scripts
+add_action( 'wp_enqueue_scripts', 'hero_slider_enqueue_assets' );
+function hero_slider_enqueue_assets(){
+    wp_enqueue_style( 'hero-slide-css', HERO_SLIDER_PLUGIN_URL.'assets/css/hero-slide.css');
+    wp_enqueue_style( 'splide-css', HERO_SLIDER_PLUGIN_URL.'assets/css/splide.min.css');
+    wp_enqueue_script( 'hero-slide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/hero-slide.js', array('jquery'), null, true);
+    wp_enqueue_script( 'splide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/splide.min.js', array(), null, true);
+}
+
+
+
+new Hero_Slider_Shortcode();
