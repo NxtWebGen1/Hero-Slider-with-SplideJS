@@ -41,6 +41,13 @@ function hero_slider_enqueue_assets(){
     wp_enqueue_script( 'splide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/splide.min.js', array(), null, true);
 }
 
+function hero_slider_admin_styles() {
+    wp_enqueue_style('hero-slide-admin-css', HERO_SLIDER_PLUGIN_URL . 'assets/css/hero-slide-admin.css');
+}
+
+add_action('admin_enqueue_scripts', 'hero_slider_admin_styles');
+
+
 
 
 new Hero_Slider_Shortcode();
