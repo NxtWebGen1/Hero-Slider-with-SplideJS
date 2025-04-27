@@ -4,10 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hero Slider Documentation</title>
-  <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        header {
+            background-color: #2980b9;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            color: #2980b9;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Styling the links in the documentation */
+        a {
+            color: #2980b9;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            header {
+                padding: 10px 0;
+            }
+
+            nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            section {
+                margin: 10px 0;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Header Section -->
     <header>
         <h1>Hero Slider Plugin Documentation</h1>
         <nav>
@@ -19,20 +108,40 @@
         </nav>
     </header>
 
+    <!-- Installation Section -->
     <section id="installation">
         <h2>Installation</h2>
-        <p>Follow these steps to install the Hero Slider plugin.</p>
+        <p>Follow these steps to install the Hero Slider plugin:</p>
+        <ol>
+            <li>Download the plugin from the official repository.</li>
+            <li>Upload the plugin folder to the <strong>/wp-content/plugins/</strong> directory.</li>
+            <li>Activate the plugin through the **Plugins** menu in WordPress.</li>
+            <li>Go to **Settings > Hero Slider Settings** to configure your slides.</li>
+        </ol>
     </section>
 
+    <!-- Usage Section -->
     <section id="usage">
         <h2>Usage</h2>
-        <p>Learn how to use the Hero Slider plugin and configure slides.</p>
+        <p>Learn how to use the Hero Slider plugin and configure your slides:</p>
+        <ul>
+            <li>Go to **Settings > Hero Slider Settings**.</li>
+            <li>Enter the image URL, heading, paragraph, and button details for each slide.</li>
+            <li>Use the shortcode <code>[hero-slider]</code> on any page or post to display your slider.</li>
+        </ul>
     </section>
 
+    <!-- Troubleshooting Section -->
     <section id="troubleshooting">
         <h2>Troubleshooting</h2>
-        <p>Common problems and how to resolve them.</p>
+        <p>If you're having issues with the Hero Slider plugin, here are some common problems and solutions:</p>
+        <ul>
+            <li><strong>Slider not appearing:</strong> Make sure you have added slides in the **Settings > Hero Slider Settings** page.</li>
+            <li><strong>Images not loading:</strong> Ensure the image URLs are correct and publicly accessible.</li>
+            <li><strong>Buttons not working:</strong> Double-check that the button link is correct and leads to a valid URL.</li>
+            <li><strong>Mobile responsiveness issues:</strong> Try adding custom CSS to adjust the slider on mobile devices.</li>
+        </ul>
     </section>
-  <script src="script.js"></script>
+
 </body>
 </html>
