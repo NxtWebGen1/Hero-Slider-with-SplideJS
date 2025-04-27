@@ -55,7 +55,4 @@ Yes! You can customize the slider’s appearance by editing the **hero-slide.css
 
 == Documentation ==
 
-For detailed documentation on how to configure the plugin and customize the slider, visit the [official documentation page](https://link-to-your-documentation.com). This includes:
-- How to add slides
-- Customization tips
-- Troubleshooting
+For detailed documentation on how to configure the plugin and customize the slider, visit the [official documentation page](https://yourusername.github.io/yourrepositoryname/).
