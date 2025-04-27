@@ -28,6 +28,7 @@ define('HERO_SLIDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 //including the class-hero-slider.php file
 require_once HERO_SLIDER_PLUGIN_DIR . 'includes/class-hero-slider.php';
+require_once HERO_SLIDER_PLUGIN_DIR . 'includes/class-hero-slider-settings.php';
 
 
 
@@ -43,3 +44,4 @@ function hero_slider_enqueue_assets(){
 
 
 new Hero_Slider_Shortcode();
+new Hero_Slider_Settings();
