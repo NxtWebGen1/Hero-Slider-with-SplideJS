@@ -34,9 +34,9 @@ require_once HERO_SLIDER_PLUGIN_DIR . 'includes/class-hero-slider.php';
 //Enqueuing Styles and Scripts
 add_action( 'wp_enqueue_scripts', 'hero_slider_enqueue_assets' );
 function hero_slider_enqueue_assets(){
-    wp_enqueue_style( 'hero-slide-css', HERO_SLIDER_PLUGIN_URL.'assets/css/hero-slide.css');
+    wp_enqueue_style('hero-slide-css', HERO_SLIDER_PLUGIN_URL . 'assets/css/hero-slide.css', array(), filemtime(HERO_SLIDER_PLUGIN_DIR . 'assets/css/hero-slide.css'));
     wp_enqueue_style( 'splide-css', HERO_SLIDER_PLUGIN_URL.'assets/css/splide.min.css');
-    wp_enqueue_script( 'hero-slide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/hero-slide.js', array('jquery'), null, true);
+    wp_enqueue_script( 'hero-slide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/hero-slide.js', array('jquery'), filemtime(HERO_SLIDER_PLUGIN_DIR . 'assets/css/hero-slide.css'), null, true);
     wp_enqueue_script( 'splide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/splide.min.js', array(), null, true);
 }
 
