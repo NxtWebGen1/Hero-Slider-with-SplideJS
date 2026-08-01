@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Per-element text color was initially wired to the wrapping `<div>` instead of the `<h2>`/`<p>` elements themselves; since those already have an explicit `color` rule in the stylesheet, an inherited color from a parent would have been silently ignored
+- Settings page was capped at a 960px max-width, leaving a large empty gap on wider screens; now fills the available admin content area
 
 ---
 

@@ -86,7 +86,7 @@ All attributes default to whatever is set in Appearance Defaults, and only need 
 
 Under **Settings → Hero Slider**, the **Appearance Defaults** card lets you independently configure the **heading**, **paragraph**, and **button** — each with its own text color, font size, and font family (plus a background color for the button) — along with toggles to hide the heading, paragraph, or dark overlay site-wide.
 
-The settings page also has a **Dark Mode** switch in the top bar for the admin UI itself (a personal preference, saved in your browser), and slide cards can be collapsed/expanded by clicking their header — handy once you have more than a few slides.
+The settings page also has a **Dark Mode** switch in the top bar for the admin UI itself (a personal preference, saved in your browser), and slide cards can be collapsed/expanded by clicking their header — handy once you have more than a few slides. The page fills the full admin content width rather than being capped to a narrow column.
 
 ---
 
@@ -114,7 +114,7 @@ Go to **Settings → Hero Slider Settings**, fill in the slide details, and save
 Currently the plugin supports one slider instance per page via the `[hero_slider]` shortcode.
 
 **Can I customize the slider design?**
-Yes! Use the Appearance settings (or shortcode attributes) to toggle the heading, paragraph, and overlay, or set a text color/font size — no CSS required. For deeper styling, edit `assets/hero-slide.css` or add custom CSS through your theme's customizer.
+Yes! Use the Appearance Defaults (or shortcode attributes) to toggle the heading, paragraph, and overlay, and set the color/font size/font family independently for the heading, paragraph, and button — no CSS required. For deeper styling, edit `assets/hero-slide.css` or add custom CSS through your theme's customizer.
 
 ---
 
