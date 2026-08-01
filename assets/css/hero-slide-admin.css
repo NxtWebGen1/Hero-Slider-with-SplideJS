@@ -5,16 +5,18 @@
    ========================================================================== */
 
 .hero-slider-wrap {
-    --hs-bg: #f1f2f6;
+    --hs-bg: #f4f3fb;
     --hs-surface: #ffffff;
-    --hs-surface-alt: #f8f9fb;
-    --hs-border: #e2e4ea;
-    --hs-text: #1f2430;
-    --hs-text-muted: #6b7280;
-    --hs-primary: #2980b9;
-    --hs-primary-hover: #3498db;
+    --hs-surface-alt: #f2effa;
+    --hs-border: #e2ddf2;
+    --hs-text: #211f36;
+    --hs-text-muted: #6c6889;
+    --hs-primary: #6c5ce7;
+    --hs-primary-strong: #5a46d6;
+    --hs-primary-hover: #7a68ef;
     --hs-accent: #ff7e5f;
-    --hs-shadow: 0 2px 12px rgba(20, 20, 40, 0.06);
+    --hs-shadow: 0 4px 20px rgba(35, 27, 82, 0.08);
+    --hs-on-primary: #ffffff;
 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--hs-bg);
@@ -26,16 +28,18 @@
 }
 
 .hero-slider-wrap.hs-dark {
-    --hs-bg: #14161f;
-    --hs-surface: #1d2030;
-    --hs-surface-alt: #242739;
-    --hs-border: #333750;
-    --hs-text: #e6e8f0;
-    --hs-text-muted: #9aa0b4;
-    --hs-primary: #5aabe8;
-    --hs-primary-hover: #7cbdec;
+    --hs-bg: #131320;
+    --hs-surface: #1c1c2e;
+    --hs-surface-alt: #242438;
+    --hs-border: #38364f;
+    --hs-text: #ece9f7;
+    --hs-text-muted: #b0abcf;
+    --hs-primary: #a89af5;
+    --hs-primary-strong: #6f5ce0;
+    --hs-primary-hover: #7d68ea;
     --hs-accent: #ff9472;
-    --hs-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+    --hs-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    --hs-on-primary: #ffffff;
 }
 
 .hero-slider-wrap * {
@@ -99,6 +103,7 @@
 
 .hs-card-subtitle code {
     background: var(--hs-surface-alt);
+    color: var(--hs-text);
     padding: 1px 5px;
     border-radius: 4px;
 }
@@ -121,9 +126,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.hs-field-row label {
     color: var(--hs-text);
 }
 
@@ -131,6 +133,71 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px 24px;
+}
+
+/* ----- Global form control theming -----
+   WP admin's default input/select/textarea styling doesn't know about our
+   dark-mode class, so left unstyled these would stay light-on-white inside
+   dark cards. Restyled once here instead of scattering per-field overrides. */
+
+.hero-slider-wrap input[type="text"],
+.hero-slider-wrap input[type="url"],
+.hero-slider-wrap input[type="number"],
+.hero-slider-wrap textarea,
+.hero-slider-wrap select {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    border: 1px solid var(--hs-border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    box-shadow: none;
+}
+
+.hero-slider-wrap input[type="text"]::placeholder,
+.hero-slider-wrap input[type="url"]::placeholder,
+.hero-slider-wrap input[type="number"]::placeholder,
+.hero-slider-wrap textarea::placeholder {
+    color: var(--hs-text-muted);
+    opacity: 1;
+}
+
+.hero-slider-wrap input[type="text"]:focus,
+.hero-slider-wrap input[type="url"]:focus,
+.hero-slider-wrap input[type="number"]:focus,
+.hero-slider-wrap textarea:focus,
+.hero-slider-wrap select:focus {
+    border-color: var(--hs-primary);
+    outline: 2px solid var(--hs-primary);
+    outline-offset: 0;
+    box-shadow: none;
+}
+
+.hero-slider-wrap input[type="color"] {
+    width: 48px;
+    height: 32px;
+    padding: 2px;
+    border: 1px solid var(--hs-border);
+    border-radius: 6px;
+    background: var(--hs-surface);
+    cursor: pointer;
+}
+
+/* WP core .button elements (Add/Duplicate/Remove Slide, Choose Image, Copy,
+   New/Delete Slider) otherwise keep their fixed light styling regardless of
+   our dark-mode toggle. */
+.hero-slider-wrap .button {
+    background: var(--hs-surface-alt);
+    border: 1px solid var(--hs-border);
+    color: var(--hs-text);
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.hero-slider-wrap .button:hover,
+.hero-slider-wrap .button:focus {
+    background: var(--hs-border);
+    border-color: var(--hs-primary);
+    color: var(--hs-text);
 }
 
 /* ----- Typography control rows ----- */
@@ -154,25 +221,6 @@
 
 .hs-typography-field label {
     color: var(--hs-text-muted);
-}
-
-.hs-typography-field input[type="color"] {
-    width: 48px;
-    height: 32px;
-    padding: 2px;
-    border: 1px solid var(--hs-border);
-    border-radius: 6px;
-    background: var(--hs-surface);
-    cursor: pointer;
-}
-
-.hs-select,
-.hs-typography-field input[type="number"] {
-    background: var(--hs-surface);
-    color: var(--hs-text);
-    border: 1px solid var(--hs-border);
-    border-radius: 6px;
-    padding: 6px 8px;
 }
 
 /* ----- Toggle switch component ----- */
@@ -217,7 +265,7 @@
 }
 
 .hs-toggle-input:checked ~ .hs-toggle-track {
-    background: var(--hs-primary);
+    background: var(--hs-primary-strong);
 }
 
 .hs-toggle-input:checked ~ .hs-toggle-track .hs-toggle-thumb {
@@ -310,11 +358,6 @@
 .hero-slide-table input,
 .hero-slide-table textarea {
     width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid var(--hs-border);
-    background: var(--hs-surface);
-    color: var(--hs-text);
     margin-top: 4px;
 }
 
@@ -368,39 +411,11 @@
 
 .hs-shortcode-snippet {
     background: var(--hs-surface-alt);
+    color: var(--hs-text);
     border: 1px solid var(--hs-border);
     border-radius: 6px;
     padding: 6px 10px;
     font-size: 13px;
-}
-
-.hs-table-scroll {
-    overflow-x: auto;
-}
-
-.hs-shortcode-attrs-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.hs-shortcode-attrs-table th,
-.hs-shortcode-attrs-table td {
-    border: 1px solid var(--hs-border);
-    padding: 8px 10px;
-    text-align: left;
-    color: var(--hs-text);
-    background: var(--hs-surface);
-    font-size: 13px;
-}
-
-.hs-shortcode-attrs-table th {
-    background: var(--hs-surface-alt);
-}
-
-.hs-shortcode-attrs-table code,
-.hs-shortcode-snippet code {
-    background: none;
-    padding: 0;
 }
 
 /* ----- Submit button ----- */
@@ -411,8 +426,8 @@
 }
 
 .submit-btn-container input {
-    background: var(--hs-primary);
-    color: #fff;
+    background: var(--hs-primary-strong);
+    color: var(--hs-on-primary);
     padding: 10px 28px;
     border: none;
     border-radius: 6px;

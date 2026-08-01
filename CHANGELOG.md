@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.1] - 2026-08-02
+
+### Changed
+- Removed the attributes reference table from the in-admin Shortcode Guide card (kept in the README instead) — it used WP core's `widefat` table class, which was fighting with the plugin's dark mode and rendering hard to read
+- Full admin color palette redesign: a distinct indigo/violet theme instead of generic blue/gray, in both light and dark mode
+
+### Fixed
+- Text inputs, textareas, `<select>` elements, and WP's own `.button` elements (Add/Duplicate/Remove Slide, Choose Image, Copy, New/Delete Slider) weren't styled by the dark-mode toggle at all, since WP admin's built-in styling doesn't know about it — they kept their fixed light appearance regardless of the toggle. Now themed consistently in both modes.
+
+---
+
 ## [1.5.0] - 2026-08-02
 
 ### Added

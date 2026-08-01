@@ -336,26 +336,7 @@ class Hero_Slider_Settings {
                                 </li>
                             <?php endforeach; ?>
                         </ul>
-                        <p class="hs-card-subtitle">Omitting <code>id</code> — just <code>[hero_slider]</code> — displays your first configured slider (currently <code><?php echo esc_html($slider_ids[0]); ?></code>). New sliders you add above will appear in this list after you save.</p>
-
-                        <h3 class="hs-subheading">Optional Attributes (override Appearance Defaults for one instance)</h3>
-                        <div class="hs-table-scroll">
-                            <table class="widefat hs-shortcode-attrs-table">
-                                <thead>
-                                    <tr><th>Attribute</th><th>Values</th><th>Description</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td><code>id</code></td><td>a slider ID</td><td>Which configured slider to display</td></tr>
-                                    <tr><td><code>heading</code></td><td>yes / no</td><td>Show or hide the heading</td></tr>
-                                    <tr><td><code>paragraph</code></td><td>yes / no</td><td>Show or hide the paragraph</td></tr>
-                                    <tr><td><code>overlay</code></td><td>yes / no</td><td>Show or hide the dark overlay</td></tr>
-                                    <tr><td><code>heading_color</code>, <code>paragraph_color</code>, <code>button_color</code></td><td>hex color, e.g. <code>#fff</code></td><td>Text color override</td></tr>
-                                    <tr><td><code>heading_font_size</code>, <code>paragraph_font_size</code>, <code>button_font_size</code></td><td>number (px)</td><td>Font size override</td></tr>
-                                    <tr><td><code>heading_font_family</code>, <code>paragraph_font_family</code>, <code>button_font_family</code></td><td>a font choice</td><td>Font override (same list as Appearance Defaults)</td></tr>
-                                    <tr><td><code>button_bg_color</code></td><td>hex color</td><td>Button background (replaces the default gradient)</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <p class="hs-card-subtitle">Omitting <code>id</code> — just <code>[hero_slider]</code> — displays your first configured slider (currently <code><?php echo esc_html($slider_ids[0]); ?></code>). New sliders you add above will appear in this list after you save. See the README's Shortcode Guide for the full list of optional attributes (heading/paragraph/overlay toggles, per-element colors, fonts, and sizes).</p>
                     </div>
                 </div>
 
