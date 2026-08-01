@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Text inputs, textareas, `<select>` elements, and WP's own `.button` elements (Add/Duplicate/Remove Slide, Choose Image, Copy, New/Delete Slider) weren't styled by the dark-mode toggle at all, since WP admin's built-in styling doesn't know about it — they kept their fixed light appearance regardless of the toggle. Now themed consistently in both modes.
+- Buttons and `<select>` dropdowns used the same subtle background/border as the card they sat on, making them barely distinguishable from their surroundings in both themes; they now use their own more visible control colors, with a clearer hover state
 
 ---
 

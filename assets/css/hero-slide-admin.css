@@ -18,6 +18,11 @@
     --hs-shadow: 0 4px 20px rgba(35, 27, 82, 0.08);
     --hs-on-primary: #ffffff;
 
+    /* Buttons/selects/inputs get their own, more distinct background+border
+       than cards — otherwise they blend into the card surface they sit on. */
+    --hs-control-bg: #ffffff;
+    --hs-control-border: #cabfe9;
+
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--hs-bg);
     color: var(--hs-text);
@@ -40,6 +45,9 @@
     --hs-accent: #ff9472;
     --hs-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
     --hs-on-primary: #ffffff;
+
+    --hs-control-bg: #322f4c;
+    --hs-control-border: #625a8f;
 }
 
 .hero-slider-wrap * {
@@ -145,9 +153,9 @@
 .hero-slider-wrap input[type="number"],
 .hero-slider-wrap textarea,
 .hero-slider-wrap select {
-    background: var(--hs-surface);
+    background: var(--hs-control-bg);
     color: var(--hs-text);
-    border: 1px solid var(--hs-border);
+    border: 1px solid var(--hs-control-border);
     border-radius: 6px;
     padding: 7px 10px;
     box-shadow: none;
@@ -176,28 +184,30 @@
     width: 48px;
     height: 32px;
     padding: 2px;
-    border: 1px solid var(--hs-border);
+    border: 1px solid var(--hs-control-border);
     border-radius: 6px;
-    background: var(--hs-surface);
+    background: var(--hs-control-bg);
     cursor: pointer;
 }
 
 /* WP core .button elements (Add/Duplicate/Remove Slide, Choose Image, Copy,
    New/Delete Slider) otherwise keep their fixed light styling regardless of
-   our dark-mode toggle. */
+   our dark-mode toggle. Given their own control colors (not the card surface
+   color) so they read as clickable instead of blending into the card. */
 .hero-slider-wrap .button {
-    background: var(--hs-surface-alt);
-    border: 1px solid var(--hs-border);
+    background: var(--hs-control-bg);
+    border: 1px solid var(--hs-control-border);
     color: var(--hs-text);
     box-shadow: none;
     text-shadow: none;
+    font-weight: 500;
 }
 
 .hero-slider-wrap .button:hover,
 .hero-slider-wrap .button:focus {
-    background: var(--hs-border);
+    background: var(--hs-primary);
     border-color: var(--hs-primary);
-    color: var(--hs-text);
+    color: var(--hs-on-primary);
 }
 
 /* ----- Typography control rows ----- */
