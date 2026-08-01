@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         speed: 2000,   // slow down transition between slides
         arrows    : false,
         cover     : true,
+        autoplay  : heroSliderSettings.autoplay,
+        interval  : heroSliderSettings.interval,
     });
 
     var thumbnails = new Splide('#thumbnail-carousel', {

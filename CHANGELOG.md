@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-08-02
+
+### Added
+- WordPress Media Library uploader for slide images ("Choose Image" button)
+- Dedicated alt text field per slide, falling back to the heading if left blank
+- Unlimited slides via "+ Add Slide" / "Remove Slide" (previously hardcoded to a fixed 5)
+- Autoplay toggle with configurable interval under "Slider Behavior"
+- `uninstall.php` to remove plugin options on deletion
+- Admin warning when a slide has content but no image (won't render on the frontend)
+- `composer.json` + `phpcs.xml.dist` (WordPress Coding Standards) + `.editorconfig` for contributors
+
+### Fixed
+- `[hero_slider]` shortcode was registered as `hero-slider`, so it never rendered
+- Frontend JS was never enqueued to load in the footer due to a malformed `wp_enqueue_script()` call
+- Script cache-busting version for `hero-slide.js` used the CSS file's modified time instead of its own
+- `hero-slide.js` (which calls `new Splide(...)`) was enqueued without depending on `splide-js`, so the Splide library could load after the code that needs it
+- Settings were saved without sanitization; now sanitized/escaped per field on save
+
+### Security
+- Added direct-access guards (`ABSPATH` check) to all PHP files
+
+---
+
 ## [1.1.0] - 2025-04-27
 
 ### Added

@@ -4,7 +4,7 @@
  * Plugin Name:       Hero Slider with SplideJS
  * Plugin URI:        https://github.com/NxtWebGen1/Hero-Slider-with-SplideJS
  * Description:       Adds a customizable hero slider using SplideJS. Includes a shortcode [hero_slider] to display a responsive slider with image, heading, description, and button. Lightweight and easy to use.
- * Version:           1.2
+ * Version:           1.3.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Murslin Shehzad
@@ -14,8 +14,9 @@
  * Text Domain:       hero-slider-splide
  */
 
-
-
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
 
 
  // Define global plugin path
@@ -37,8 +38,20 @@ add_action( 'wp_enqueue_scripts', 'hero_slider_enqueue_assets' );
 function hero_slider_enqueue_assets(){
     wp_enqueue_style('hero-slide-css', HERO_SLIDER_PLUGIN_URL . 'assets/css/hero-slide.css', array(), filemtime(HERO_SLIDER_PLUGIN_DIR . 'assets/css/hero-slide.css'));
     wp_enqueue_style( 'splide-css', HERO_SLIDER_PLUGIN_URL.'assets/css/splide.min.css');
-    wp_enqueue_script( 'hero-slide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/hero-slide.js', array('jquery'), filemtime(HERO_SLIDER_PLUGIN_DIR . 'assets/css/hero-slide.css'), null, true);
+
     wp_enqueue_script( 'splide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/splide.min.js', array(), null, true);
+
+    // Depends on splide-js so the Splide library is guaranteed to load first.
+    wp_enqueue_script( 'hero-slide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/hero-slide.js', array('jquery', 'splide-js'), filemtime(HERO_SLIDER_PLUGIN_DIR . 'assets/js/hero-slide.js'), true);
+
+    $general_settings = wp_parse_args(get_option('hero_slider_general_settings'), array(
+        'autoplay' => 0,
+        'interval' => 4000,
+    ));
+    wp_localize_script('hero-slide-js', 'heroSliderSettings', array(
+        'autoplay' => (bool) $general_settings['autoplay'],
+        'interval' => (int) $general_settings['interval'],
+    ));
 }
 
 function hero_slider_admin_styles() {

@@ -1,9 +1,13 @@
-<?php 
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
 
 class Hero_Slider_Shortcode{
 
     public function __construct(){
-        add_shortcode( 'hero-slider', array($this, 'hero_slider_display') );
+        add_shortcode( 'hero_slider', array($this, 'hero_slider_display') );
     }
 
 
@@ -25,7 +29,7 @@ class Hero_Slider_Shortcode{
                     <?php foreach($slides as $slide): ?>
                         <?php if(!empty($slide['image'])): ?>
                             <li class="splide__slide">
-                                <img src="<?php echo esc_url($slide['image']); ?>" alt="">
+                                <img src="<?php echo esc_url($slide['image']); ?>" alt="<?php echo esc_attr(($slide['alt'] ?? '') ?: ($slide['heading'] ?? '')); ?>">
                                 <div class="slide-content">
                                     <h2><?php echo esc_html($slide['heading']); ?></h2>
                                     <p><?php echo esc_html($slide['paragraph']); ?></p>
@@ -49,7 +53,7 @@ class Hero_Slider_Shortcode{
                         <?php foreach ($slides as $slide): ?>
                             <?php if (!empty($slide['image'])): ?>
                                 <li class="splide__slide">
-                                    <img src="<?php echo esc_url($slide['image']); ?>" alt="">
+                                    <img src="<?php echo esc_url($slide['image']); ?>" alt="<?php echo esc_attr(($slide['alt'] ?? '') ?: ($slide['heading'] ?? '')); ?> thumbnail">
                                 </li>
                             <?php endif; ?>
                         <?php endforeach; ?>

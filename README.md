@@ -1,6 +1,6 @@
 # Hero Slider with SplideJS
 
-![WordPress](https://img.shields.io/badge/WordPress-%E2%89%A55.2-blue) ![PHP](https://img.shields.io/badge/PHP-%E2%89%A57.2-777BB4) ![License](https://img.shields.io/badge/License-GPL--2.0-green) ![Version](https://img.shields.io/badge/Stable-1.1.0-brightgreen)
+![WordPress](https://img.shields.io/badge/WordPress-%E2%89%A55.2-blue) ![PHP](https://img.shields.io/badge/PHP-%E2%89%A57.2-777BB4) ![License](https://img.shields.io/badge/License-GPL--2.0-green) ![Version](https://img.shields.io/badge/Stable-1.3.0-brightgreen)
 
 A lightweight WordPress plugin that adds a fully responsive, customizable hero slider using [SplideJS](https://splidejs.com/). Add and manage slides directly from your WordPress admin — no coding required.
 
@@ -8,11 +8,13 @@ A lightweight WordPress plugin that adds a fully responsive, customizable hero s
 
 ## ✨ Features
 
-- 🖼️ Add multiple slides from the WordPress Admin
+- 🖼️ Add an unlimited number of slides from the WordPress Admin (add/remove on the fly)
 - 📱 Fully responsive — works on desktop, tablet, and mobile
 - ⚡ Powered by SplideJS for smooth, modern transitions
+- ▶️ Optional autoplay with a configurable interval
 - 🔘 Each slide supports:
-  - Image (via URL)
+  - Image (via URL or the WordPress Media Library uploader)
+  - Alt text for accessibility
   - Heading
   - Paragraph / description
   - Button with custom text and link
@@ -36,12 +38,15 @@ A lightweight WordPress plugin that adds a fully responsive, customizable hero s
 
 1. Go to **Settings → Hero Slider Settings**
 2. Fill in the slide details:
-   - **Image URL** — direct link to your image
+   - **Image URL** — direct link to your image, or click **Choose Image** to pick one from the Media Library
+   - **Image Alt Text** — accessible description of the image
    - **Heading** — main title for the slide
    - **Paragraph** — supporting description text
    - **Button Text** — label for the CTA button
    - **Button Link** — URL the button points to
-3. Save changes — the slider updates immediately
+3. Click **+ Add Slide** for more slides, or **Remove Slide** to delete one
+4. Optionally enable **Autoplay** and set the interval under "Slider Behavior"
+5. Save changes — the slider updates immediately
 
 ### Shortcode
 
@@ -50,6 +55,12 @@ Place this shortcode on any page or post:
 ```
 [hero_slider]
 ```
+
+---
+
+## 📸 Screenshots
+
+> _Add screenshots or a demo GIF here (e.g. the frontend slider and the admin settings page) before publishing/sharing this repo._
 
 ---
 
@@ -87,6 +98,17 @@ Yes! Edit `assets/hero-slide.css` or add custom CSS through your theme's customi
 ## 🤝 Contributing
 
 Contributions are welcome! Please open an issue first to discuss what you'd like to change, then submit a pull request.
+
+---
+
+## 🧑‍💻 Development
+
+Install dev dependencies and run the WordPress Coding Standards linter:
+
+```
+composer install
+composer run lint
+```
 
 ---
 
