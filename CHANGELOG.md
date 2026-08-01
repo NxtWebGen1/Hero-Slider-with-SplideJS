@@ -7,12 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] - 2026-08-02
+
+### Added
+- Independent typography controls for the heading, paragraph, and button — each with its own text color, font size, and font family (plus a background color for the button) — as both site-wide Appearance Defaults and matching `[hero_slider]` shortcode attributes (`heading_color`, `heading_font_size`, `heading_font_family`, `paragraph_*`, `button_*`)
+- `heading`/`paragraph`/`overlay` show/hide toggles, both site-wide and per shortcode
+- Full admin settings page redesign: card-based layout, a Dark/Light mode switch for the admin UI (saved in the browser), toggle-switch styled checkboxes, and collapsible slide cards with a live heading preview in the header
+- Shortcode Guide section in the README documenting every attribute
+
+### Fixed
+- Per-element text color was initially wired to the wrapping `<div>` instead of the `<h2>`/`<p>` elements themselves; since those already have an explicit `color` rule in the stylesheet, an inherited color from a parent would have been silently ignored
+
+---
+
 ## [1.3.0] - 2026-08-02
 
 ### Added
 - WordPress Media Library uploader for slide images ("Choose Image" button)
 - Dedicated alt text field per slide, falling back to the heading if left blank
-- Unlimited slides via "+ Add Slide" / "Remove Slide" (previously hardcoded to a fixed 5)
+- Unlimited slides via "+ Add Slide" / "Duplicate Slide" / "Remove Slide" (previously hardcoded to a fixed 5)
 - Autoplay toggle with configurable interval under "Slider Behavior"
 - `uninstall.php` to remove plugin options on deletion
 - Admin warning when a slide has content but no image (won't render on the frontend)

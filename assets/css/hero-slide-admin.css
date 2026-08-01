@@ -1,115 +1,384 @@
-/* General styles for Hero Slider settings page */
+/* ==========================================================================
+   Hero Slider Settings — admin UI
+   Theming is done with custom properties on .hero-slider-wrap so the whole
+   page can flip between light and dark by toggling the .hs-dark class.
+   ========================================================================== */
+
 .hero-slider-wrap {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    --hs-bg: #f1f2f6;
+    --hs-surface: #ffffff;
+    --hs-surface-alt: #f8f9fb;
+    --hs-border: #e2e4ea;
+    --hs-text: #1f2430;
+    --hs-text-muted: #6b7280;
+    --hs-primary: #2980b9;
+    --hs-primary-hover: #3498db;
+    --hs-accent: #ff7e5f;
+    --hs-shadow: 0 2px 12px rgba(20, 20, 40, 0.06);
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--hs-bg);
+    color: var(--hs-text);
+    padding: 24px;
+    border-radius: 12px;
+    max-width: none;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
-.hero-slider-header {
-    color: #333;
-    text-align: left;
-    font-size: 40px !important;
-    margin-bottom: 40px;
-    font-weight: bold
+.hero-slider-wrap.hs-dark {
+    --hs-bg: #14161f;
+    --hs-surface: #1d2030;
+    --hs-surface-alt: #242739;
+    --hs-border: #333750;
+    --hs-text: #e6e8f0;
+    --hs-text-muted: #9aa0b4;
+    --hs-primary: #5aabe8;
+    --hs-primary-hover: #7cbdec;
+    --hs-accent: #ff9472;
+    --hs-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
 }
 
-.hero-slider-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.hero-slider-wrap * {
+    box-sizing: border-box;
 }
+
+/* ----- Top bar ----- */
+
+.hero-slider-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.hero-slider-topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--hs-text);
+}
+
+.hero-slider-topbar-title .dashicons {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: var(--hs-primary);
+}
+
+/* ----- Cards ----- */
+
+.hs-card {
+    background: var(--hs-surface);
+    border: 1px solid var(--hs-border);
+    border-radius: 10px;
+    box-shadow: var(--hs-shadow);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.hs-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    margin: 0 0 4px;
+    color: var(--hs-text);
+}
+
+.hs-card-title .dashicons {
+    color: var(--hs-primary);
+}
+
+.hs-card-subtitle {
+    color: var(--hs-text-muted);
+    font-size: 13px;
+    margin: 0 0 16px;
+}
+
+.hs-card-subtitle code {
+    background: var(--hs-surface-alt);
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+.hs-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.hs-subheading {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--hs-text-muted);
+    margin: 6px 0 -4px;
+}
+
+.hs-field-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hs-field-row label {
+    color: var(--hs-text);
+}
+
+.hs-toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+}
+
+/* ----- Typography control rows ----- */
+
+.hs-typography-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    background: var(--hs-surface-alt);
+    border: 1px solid var(--hs-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+.hs-typography-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+}
+
+.hs-typography-field label {
+    color: var(--hs-text-muted);
+}
+
+.hs-typography-field input[type="color"] {
+    width: 48px;
+    height: 32px;
+    padding: 2px;
+    border: 1px solid var(--hs-border);
+    border-radius: 6px;
+    background: var(--hs-surface);
+    cursor: pointer;
+}
+
+.hs-select,
+.hs-typography-field input[type="number"] {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    border: 1px solid var(--hs-border);
+    border-radius: 6px;
+    padding: 6px 8px;
+}
+
+/* ----- Toggle switch component ----- */
+
+.hs-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--hs-text);
+    user-select: none;
+}
+
+.hs-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.hs-toggle-track {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 22px;
+    background: var(--hs-border);
+    border-radius: 999px;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.hs-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.hs-toggle-input:checked ~ .hs-toggle-track {
+    background: var(--hs-primary);
+}
+
+.hs-toggle-input:checked ~ .hs-toggle-track .hs-toggle-thumb {
+    transform: translateX(16px);
+}
+
+.hs-toggle-input:focus-visible ~ .hs-toggle-track {
+    outline: 2px solid var(--hs-primary);
+    outline-offset: 2px;
+}
+
+.hs-theme-toggle .hs-toggle-label-text {
+    font-weight: 600;
+}
+
+/* ----- Slide cards (collapsible) ----- */
 
 .hero-slide-section {
-    margin-bottom: 40px;
+    background: var(--hs-surface-alt);
+    border: 1px solid var(--hs-border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.hero-slide-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
 }
 
 .hero-slide-title {
-    font-size: 24px;
-    color: #2980b9;
-    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--hs-text);
+    margin: 0;
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+}
+
+.hero-slide-number {
+    color: var(--hs-primary);
+}
+
+.hero-slide-title-preview {
+    color: var(--hs-text-muted);
+    font-weight: 400;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hero-slide-toggle-icon {
+    color: var(--hs-text-muted);
+    transition: transform 0.2s ease;
+}
+
+.hero-slide-section.collapsed .hero-slide-toggle-icon {
+    transform: rotate(180deg);
+}
+
+.hero-slide-body {
+    padding: 0 16px 16px;
+}
+
+.hero-slide-section.collapsed .hero-slide-body {
+    display: none;
 }
 
 .hero-slide-table {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 .hero-slide-table th {
     text-align: left;
     padding-right: 10px;
+    color: var(--hs-text-muted);
+    font-weight: 500;
 }
 
 .hero-slide-table td {
-    padding: 10px;
+    padding: 8px 0;
 }
 
 .hero-slide-table input,
 .hero-slide-table textarea {
     width: 100%;
     padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid var(--hs-border);
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    margin-top: 4px;
 }
 
 .hero-slide-table textarea {
     resize: vertical;
 }
 
-.hero-slider-divider {
-    border: 1px solid #eee;
-    margin: 20px 0;
-}
-
-.hero-slider-general-settings {
-    margin-bottom: 10px;
-}
-
 .hero-slider-upload-btn {
     margin-top: 8px;
 }
 
-.hero-slider-remove-slide {
-    margin-top: 10px;
+.hero-slide-actions {
+    display: flex;
+    gap: 8px;
 }
+
+.hero-slider-divider {
+    display: none; /* slide cards now visually separate themselves; dividers stay in the DOM only for JS bookkeeping */
+}
+
+/* ----- Submit button ----- */
 
 .submit-btn-container {
     text-align: center;
+    margin-top: 8px;
 }
 
 .submit-btn-container input {
-    background-color: #2980b9;
-    color: white;
-    padding: 10px 20px;
+    background: var(--hs-primary);
+    color: #fff;
+    padding: 10px 28px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
+    transition: background 0.2s ease;
 }
 
 .submit-btn-container input:hover {
-    background-color: #3498db;
+    background: var(--hs-primary-hover);
 }
 
-/* Mobile responsive design */
+/* ----- Mobile responsive ----- */
+
 @media (max-width: 768px) {
     .hero-slider-wrap {
-        padding: 20px;
+        padding: 16px;
     }
 
-    .hero-slider-header {
-        font-size: 28px;
+    .hero-slider-topbar {
+        flex-wrap: wrap;
+        gap: 12px;
     }
 
-    .hero-slide-section {
-        margin-bottom: 30px;
+    .hero-slider-topbar-title {
+        font-size: 22px;
     }
 
-    .hero-slide-table {
-        width: 100%;
+    .hs-card {
+        padding: 16px;
+    }
+
+    .hero-slide-title-preview {
+        max-width: 160px;
     }
 
     .submit-btn-container input {

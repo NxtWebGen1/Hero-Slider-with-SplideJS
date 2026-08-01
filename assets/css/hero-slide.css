@@ -15,6 +15,11 @@
     z-index: 1;
 }
 
+/* Disables the dark gradient overlay (via the overlay="no" shortcode attribute or the Appearance setting) */
+#main-carousel.hero-slider-no-overlay .splide__slide::after {
+    content: none;
+}
+
 /* Slide Content - Hidden by default */
 #main-carousel .slide-content {
     position: absolute;
