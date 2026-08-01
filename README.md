@@ -1,6 +1,6 @@
 # Hero Slider with SplideJS
 
-![WordPress](https://img.shields.io/badge/WordPress-%E2%89%A55.2-blue) ![PHP](https://img.shields.io/badge/PHP-%E2%89%A57.2-777BB4) ![License](https://img.shields.io/badge/License-GPL--2.0-green) ![Version](https://img.shields.io/badge/Stable-1.4.0-brightgreen)
+![WordPress](https://img.shields.io/badge/WordPress-%E2%89%A55.2-blue) ![PHP](https://img.shields.io/badge/PHP-%E2%89%A57.2-777BB4) ![License](https://img.shields.io/badge/License-GPL--2.0-green) ![Version](https://img.shields.io/badge/Stable-1.5.0-brightgreen)
 
 A lightweight WordPress plugin that adds a fully responsive, customizable hero slider using [SplideJS](https://splidejs.com/). Add and manage slides directly from your WordPress admin — no coding required.
 
@@ -8,10 +8,11 @@ A lightweight WordPress plugin that adds a fully responsive, customizable hero s
 
 ## ✨ Features
 
-- 🖼️ Add an unlimited number of slides from the WordPress Admin (add/remove on the fly)
+- 🎞️ Create multiple independent sliders (each with its own slides and autoplay setting) and embed any of them with `[hero_slider id="..."]`
+- 🖼️ Add an unlimited number of slides per slider from the WordPress Admin (add/remove on the fly)
 - 📱 Fully responsive — works on desktop, tablet, and mobile
 - ⚡ Powered by SplideJS for smooth, modern transitions
-- ▶️ Optional autoplay with a configurable interval
+- ▶️ Optional autoplay with a configurable interval, per slider
 - 🎨 Independent color, font size, and font family controls for the heading, paragraph, and button — site-wide or per shortcode
 - 🌗 Dark/Light mode toggle for the admin settings page itself
 - 🔘 Each slide supports:
@@ -36,36 +37,40 @@ A lightweight WordPress plugin that adds a fully responsive, customizable hero s
 
 ## 🛠️ Usage
 
-### Adding Slides
+### Creating Sliders & Adding Slides
 
-1. Go to **Settings → Hero Slider Settings**
-2. Fill in the slide details:
+1. Go to **Settings → Hero Slider Settings** → **Sliders** card
+2. Use the **Editing slider** dropdown to switch between sliders, **+ New Slider** to create another independent one (you'll be asked for a short ID, e.g. `homepage`), or **Delete This Slider** to remove one (at least one must always exist)
+3. Within a slider, fill in each slide's details:
    - **Image URL** — direct link to your image, or click **Choose Image** to pick one from the Media Library
    - **Image Alt Text** — accessible description of the image
    - **Heading** — main title for the slide
    - **Paragraph** — supporting description text
    - **Button Text** — label for the CTA button
    - **Button Link** — URL the button points to
-3. Click **+ Add Slide** for a new blank slide, **Duplicate Slide** to copy an existing one, or **Remove Slide** to delete one
-4. Optionally enable **Autoplay** and set the interval under "Slider Behavior"
-5. Save changes — the slider updates immediately
+4. Click **+ Add Slide** for a new blank slide, **Duplicate Slide** to copy an existing one, or **Remove Slide** to delete one
+5. Optionally enable **Autoplay** and set its interval for that slider
+6. Save changes — an in-page **Shortcode Guide** (see below) shows the exact `[hero_slider]` shortcode for every slider you've saved
 
 ### Shortcode Guide
 
-Place this shortcode on any page or post to display the slider:
+Every slider you create gets its own shortcode:
 
 ```
-[hero_slider]
+[hero_slider id="homepage"]
 ```
 
-By default it uses the site-wide **Appearance Defaults** (see below), but you can override any of them just for that one instance using attributes:
+Omitting `id` — just `[hero_slider]` — displays your first configured slider. Two different `[hero_slider id="..."]` instances can even appear on the same page at once; each renders and plays independently.
+
+By default a shortcode uses the site-wide **Appearance Defaults** (see below), but you can override any of them just for that one instance using attributes:
 
 ```
-[hero_slider heading="no" overlay="no" heading_color="#ffcc00" heading_font_size="40" button_bg_color="#111111"]
+[hero_slider id="homepage" heading="no" overlay="no" heading_color="#ffcc00" heading_font_size="40" button_bg_color="#111111"]
 ```
 
 | Attribute              | Values                  | Description                                            |
 |------------------------|--------------------------|----------------------------------------------------------|
+| `id`                   | a slider ID              | Which configured slider to display                       |
 | `heading`              | `yes` / `no`             | Show or hide the slide heading                          |
 | `paragraph`            | `yes` / `no`             | Show or hide the paragraph / description                |
 | `overlay`              | `yes` / `no`             | Show or hide the dark gradient overlay behind the text   |
@@ -80,11 +85,11 @@ By default it uses the site-wide **Appearance Defaults** (see below), but you ca
 | `button_font_size`     | number (px)              | Button font size                                         |
 | `button_font_family`   | one of the font choices  | Button font                                              |
 
-All attributes default to whatever is set in Appearance Defaults, and only need to be passed when overriding for that one instance.
+All attributes default to whatever is set in Appearance Defaults, and only need to be passed when overriding for that one instance. This whole table (plus a copy-to-clipboard button per slider) is also shown directly on the settings page.
 
 ### Appearance Defaults & Admin UI
 
-Under **Settings → Hero Slider**, the **Appearance Defaults** card lets you independently configure the **heading**, **paragraph**, and **button** — each with its own text color, font size, and font family (plus a background color for the button) — along with toggles to hide the heading, paragraph, or dark overlay site-wide.
+Under **Settings → Hero Slider**, the **Appearance Defaults** card lets you independently configure the **heading**, **paragraph**, and **button** — each with its own text color, font size, and font family (plus a background color for the button) — along with toggles to hide the heading, paragraph, or dark overlay site-wide (applies across all sliders, unless a shortcode instance overrides it).
 
 The settings page also has a **Dark Mode** switch in the top bar for the admin UI itself (a personal preference, saved in your browser), and slide cards can be collapsed/expanded by clicking their header — handy once you have more than a few slides. The page fills the full admin content width rather than being capped to a narrow column.
 
@@ -110,8 +115,8 @@ You can customize the slider's appearance by:
 **How do I add a new slide?**
 Go to **Settings → Hero Slider Settings**, fill in the slide details, and save.
 
-**Can I have multiple sliders on one page?**
-Currently the plugin supports one slider instance per page via the `[hero_slider]` shortcode.
+**Can I have multiple sliders?**
+Yes — create as many as you like under **Settings → Hero Slider → Sliders**, each with its own slides and autoplay setting, and embed any of them anywhere with `[hero_slider id="..."]`. You can even place two different sliders on the same page.
 
 **Can I customize the slider design?**
 Yes! Use the Appearance Defaults (or shortcode attributes) to toggle the heading, paragraph, and overlay, and set the color/font size/font family independently for the heading, paragraph, and button — no CSS required. For deeper styling, edit `assets/hero-slide.css` or add custom CSS through your theme's customizer.

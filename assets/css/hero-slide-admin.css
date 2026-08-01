@@ -335,6 +335,74 @@
     display: none; /* slide cards now visually separate themselves; dividers stay in the DOM only for JS bookkeeping */
 }
 
+/* ----- Multi-slider switcher ----- */
+
+.hs-slider-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.hs-slider-switcher label {
+    color: var(--hs-text-muted);
+}
+
+/* ----- Shortcode guide ----- */
+
+.hs-shortcode-list {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hs-shortcode-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hs-shortcode-snippet {
+    background: var(--hs-surface-alt);
+    border: 1px solid var(--hs-border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
+.hs-table-scroll {
+    overflow-x: auto;
+}
+
+.hs-shortcode-attrs-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.hs-shortcode-attrs-table th,
+.hs-shortcode-attrs-table td {
+    border: 1px solid var(--hs-border);
+    padding: 8px 10px;
+    text-align: left;
+    color: var(--hs-text);
+    background: var(--hs-surface);
+    font-size: 13px;
+}
+
+.hs-shortcode-attrs-table th {
+    background: var(--hs-surface-alt);
+}
+
+.hs-shortcode-attrs-table code,
+.hs-shortcode-snippet code {
+    background: none;
+    padding: 0;
+}
+
 /* ----- Submit button ----- */
 
 .submit-btn-container {

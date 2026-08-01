@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2026-08-02
+
+### Added
+- Multi-slider support: create, switch between, and delete multiple independent sliders (each with its own slides and autoplay/interval), managed from a new "Sliders" card with a slider switcher
+- `id` shortcode attribute — `[hero_slider id="homepage"]` — to pick which configured slider to display; omitting it falls back to the first configured slider
+- In-admin **Shortcode Guide** card at the bottom of the settings page, listing a ready-to-copy shortcode (with a Copy button) for every saved slider, plus the full attribute reference table
+- One-time automatic migration of existing single-slider data into a slider named "default", so upgrading doesn't break existing `[hero_slider]` shortcodes already placed on the site
+
+### Fixed
+- The frontend previously hard-coded `#main-carousel`/`#thumbnail-carousel` IDs and a single page-wide autoplay config; two sliders on the same page would have collided (duplicate IDs, wrong autoplay settings). Each `[hero_slider]` instance now renders with a unique ID and reads its own slider's autoplay/interval from data attributes, so multiple independently-configured sliders can coexist on one page
+- Caught in review: a slider-repeater regex used during renumbering matched the first bracketed number in a field's `name` attribute, which would have targeted the wrong bracket if a slider was ever named a purely-numeric ID (e.g. `"123"`); narrowed to match `[slides][N]` specifically
+- Caught in review: cloning a brand-new slider's markup didn't reach inside its nested per-slide `<template>` (a `<template>`'s content lives in an inert, separately-cloned DocumentFragment), which would have left "+ Add Slide" on a new slider silently writing to a bogus slider key; now processed explicitly
+- `array_key_first()` (PHP 7.3+) was used to pick a fallback slider despite the plugin declaring PHP 7.2 support; replaced with a 7.2-compatible equivalent
+
+---
+
 ## [1.4.0] - 2026-08-02
 
 ### Added

@@ -42,34 +42,45 @@ class Hero_Slider_Settings {
         );
     }
 
+    // One-time migration: the plugin used to store a single global slide list
+    // (hero_slider_slides + hero_slider_general_settings). Fold that into the
+    // new multi-slider option as a slider named "default" so existing sites/
+    // shortcodes keep working after upgrading.
+    private function maybe_migrate_legacy_data() {
+        if (get_option('hero_slider_sliders') !== false) {
+            return;
+        }
+
+        $legacy_slides  = get_option('hero_slider_slides');
+        $legacy_general = get_option('hero_slider_general_settings');
+
+        if (empty($legacy_slides) && empty($legacy_general)) {
+            return;
+        }
+
+        update_option('hero_slider_sliders', array(
+            'default' => array(
+                'autoplay' => !empty($legacy_general['autoplay']) ? 1 : 0,
+                'interval' => !empty($legacy_general['interval']) ? absint($legacy_general['interval']) : 4000,
+                'slides'   => is_array($legacy_slides) ? $legacy_slides : array(),
+            ),
+        ));
+    }
+
     // Function to register our options with WordPress
     public function register_settings() {
-        register_setting(
-            'hero_slider_settings_group',     // Group name (must match settings_fields())
-            'hero_slider_slides',             // Option name (saved in database)
-            array('sanitize_callback' => array($this, 'sanitize_slides'))
-        );
+        $this->maybe_migrate_legacy_data();
 
         register_setting(
-            'hero_slider_settings_group',
-            'hero_slider_general_settings',
-            array('sanitize_callback' => array($this, 'sanitize_general_settings'))
+            'hero_slider_settings_group',     // Group name (must match settings_fields())
+            'hero_slider_sliders',            // Option name (saved in database)
+            array('sanitize_callback' => array($this, 'sanitize_sliders'))
         );
 
         register_setting(
             'hero_slider_settings_group',
             'hero_slider_appearance_settings',
             array('sanitize_callback' => array($this, 'sanitize_appearance_settings'))
-        );
-    }
-
-    // Sanitize the autoplay/interval settings
-    public function sanitize_general_settings($input) {
-        $interval = isset($input['interval']) ? absint($input['interval']) : 4000;
-
-        return array(
-            'autoplay' => !empty($input['autoplay']) ? 1 : 0,
-            'interval' => max(1000, $interval),
         );
     }
 
@@ -109,8 +120,39 @@ class Hero_Slider_Settings {
         );
     }
 
+    // Sanitize the whole multi-slider option: each slider gets its own autoplay/interval and slide list
+    public function sanitize_sliders($input) {
+        if (!is_array($input)) {
+            return array('default' => array('autoplay' => 0, 'interval' => 4000, 'slides' => array()));
+        }
+
+        $sanitized = array();
+        foreach ($input as $slider_id => $slider) {
+            $slider_id = sanitize_key($slider_id);
+            if ($slider_id === '' || !is_array($slider)) {
+                continue;
+            }
+
+            $interval = isset($slider['interval']) ? absint($slider['interval']) : 4000;
+
+            $sanitized[$slider_id] = array(
+                'autoplay' => !empty($slider['autoplay']) ? 1 : 0,
+                'interval' => max(1000, $interval),
+                'slides'   => $this->sanitize_slides($slider['slides'] ?? array()),
+            );
+        }
+
+        // Always keep at least one slider so the settings page and any existing
+        // [hero_slider] shortcodes on the site have something to fall back to.
+        if (empty($sanitized)) {
+            $sanitized['default'] = array('autoplay' => 0, 'interval' => 4000, 'slides' => array());
+        }
+
+        return $sanitized;
+    }
+
     // Sanitize each slide field before it's saved to the database
-    public function sanitize_slides($slides) {
+    private function sanitize_slides($slides) {
         if (!is_array($slides)) {
             return array();
         }
@@ -200,16 +242,13 @@ class Hero_Slider_Settings {
 
     // Function to output the actual settings page form
     public function hero_slider_setting_html() {
-        $slides   = get_option('hero_slider_slides');
-        $general  = wp_parse_args(get_option('hero_slider_general_settings'), array(
-            'autoplay' => 0,
-            'interval' => 4000,
-        ));
-        $appearance = wp_parse_args(get_option('hero_slider_appearance_settings'), hero_slider_get_appearance_defaults());
-
-        if (empty($slides)) {
-            $slides = array(array()); // Always show at least one empty slide block.
+        $sliders = get_option('hero_slider_sliders');
+        if (empty($sliders) || !is_array($sliders)) {
+            $sliders = array('default' => array('autoplay' => 0, 'interval' => 4000, 'slides' => array(array())));
         }
+        $slider_ids = array_keys($sliders);
+
+        $appearance = wp_parse_args(get_option('hero_slider_appearance_settings'), hero_slider_get_appearance_defaults());
         ?>
         <div class="wrap hero-slider-wrap">
 
@@ -234,20 +273,8 @@ class Hero_Slider_Settings {
                 ?>
 
                 <div class="hs-card">
-                    <h2 class="hs-card-title"><span class="dashicons dashicons-controls-play"></span> Slider Behavior</h2>
-                    <div class="hs-card-body">
-                        <?php echo $this->render_toggle('hero_slider_autoplay', 'hero_slider_general_settings[autoplay]', $general['autoplay'], 'Automatically advance slides'); ?>
-
-                        <div class="hs-field-row">
-                            <label for="hero_slider_interval">Autoplay Interval (ms)</label>
-                            <input type="number" id="hero_slider_interval" name="hero_slider_general_settings[interval]" min="1000" step="500" value="<?php echo esc_attr($general['interval']); ?>" class="small-text" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hs-card">
                     <h2 class="hs-card-title"><span class="dashicons dashicons-admin-appearance"></span> Appearance Defaults</h2>
-                    <p class="hs-card-subtitle">These apply to every <code>[hero_slider]</code> shortcode, unless overridden by its attributes — see the README's Shortcode Guide.</p>
+                    <p class="hs-card-subtitle">These apply to every <code>[hero_slider]</code> shortcode (across all sliders), unless overridden by its attributes — see the Shortcode Guide below.</p>
                     <div class="hs-card-body">
                         <div class="hs-toggle-group">
                             <?php echo $this->render_toggle('hero_slider_show_heading', 'hero_slider_appearance_settings[show_heading]', $appearance['show_heading'], 'Show heading'); ?>
@@ -270,22 +297,65 @@ class Hero_Slider_Settings {
                 </div>
 
                 <div class="hs-card">
-                    <h2 class="hs-card-title"><span class="dashicons dashicons-images-alt2"></span> Slides</h2>
+                    <h2 class="hs-card-title"><span class="dashicons dashicons-images-alt2"></span> Sliders</h2>
+                    <p class="hs-card-subtitle">Create multiple independent sliders — each with its own slides and autoplay setting — and embed any of them with <code>[hero_slider id="..."]</code>.</p>
                     <div class="hs-card-body">
-                        <div id="hero-slider-slides-container">
-                            <?php foreach ($slides as $i => $slide): ?>
-                                <?php echo $this->render_slide_fields($i, $slide); ?>
+                        <div class="hs-slider-switcher">
+                            <label for="hero-slider-active-select">Editing slider:</label>
+                            <select id="hero-slider-active-select" class="hs-select">
+                                <?php foreach ($slider_ids as $sid): ?>
+                                    <option value="<?php echo esc_attr($sid); ?>"><?php echo esc_html($sid); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="button" id="hero-slider-new-slider" class="button">+ New Slider</button>
+                            <button type="button" id="hero-slider-delete-slider" class="button">Delete This Slider</button>
+                        </div>
+
+                        <div id="hero-slider-panels">
+                            <?php foreach ($sliders as $slider_id => $slider): ?>
+                                <?php echo $this->render_slider_panel($slider_id, $slider); ?>
                             <?php endforeach; ?>
                         </div>
 
-                        <p>
-                            <button type="button" id="hero-slider-add-slide" class="button">+ Add Slide</button>
-                        </p>
-
-                        <!-- Hidden template used by JS to add new slides -->
-                        <template id="hero-slider-slide-template">
-                            <?php echo $this->render_slide_fields('__INDEX__', array()); ?>
+                        <!-- Hidden template used by JS to create a brand-new slider -->
+                        <template id="hero-slider-panel-template">
+                            <?php echo $this->render_slider_panel('__SLIDER_ID__', array('autoplay' => 0, 'interval' => 4000, 'slides' => array(array()))); ?>
                         </template>
+                    </div>
+                </div>
+
+                <div class="hs-card hs-shortcode-guide">
+                    <h2 class="hs-card-title"><span class="dashicons dashicons-editor-code"></span> Shortcode Guide</h2>
+                    <div class="hs-card-body">
+                        <p>Place one of these anywhere (a page, post, or any widget/block that renders shortcodes):</p>
+                        <ul class="hs-shortcode-list">
+                            <?php foreach ($slider_ids as $sid): ?>
+                                <li>
+                                    <code class="hs-shortcode-snippet">[hero_slider id="<?php echo esc_html($sid); ?>"]</code>
+                                    <button type="button" class="button hero-slider-copy-shortcode" data-shortcode='[hero_slider id="<?php echo esc_attr($sid); ?>"]'>Copy</button>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <p class="hs-card-subtitle">Omitting <code>id</code> — just <code>[hero_slider]</code> — displays your first configured slider (currently <code><?php echo esc_html($slider_ids[0]); ?></code>). New sliders you add above will appear in this list after you save.</p>
+
+                        <h3 class="hs-subheading">Optional Attributes (override Appearance Defaults for one instance)</h3>
+                        <div class="hs-table-scroll">
+                            <table class="widefat hs-shortcode-attrs-table">
+                                <thead>
+                                    <tr><th>Attribute</th><th>Values</th><th>Description</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><code>id</code></td><td>a slider ID</td><td>Which configured slider to display</td></tr>
+                                    <tr><td><code>heading</code></td><td>yes / no</td><td>Show or hide the heading</td></tr>
+                                    <tr><td><code>paragraph</code></td><td>yes / no</td><td>Show or hide the paragraph</td></tr>
+                                    <tr><td><code>overlay</code></td><td>yes / no</td><td>Show or hide the dark overlay</td></tr>
+                                    <tr><td><code>heading_color</code>, <code>paragraph_color</code>, <code>button_color</code></td><td>hex color, e.g. <code>#fff</code></td><td>Text color override</td></tr>
+                                    <tr><td><code>heading_font_size</code>, <code>paragraph_font_size</code>, <code>button_font_size</code></td><td>number (px)</td><td>Font size override</td></tr>
+                                    <tr><td><code>heading_font_family</code>, <code>paragraph_font_family</code>, <code>button_font_family</code></td><td>a font choice</td><td>Font override (same list as Appearance Defaults)</td></tr>
+                                    <tr><td><code>button_bg_color</code></td><td>hex color</td><td>Button background (replaces the default gradient)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -298,9 +368,42 @@ class Hero_Slider_Settings {
         <?php
     }
 
-    // Renders a single slide's fields. Used both for saved slides and the JS "add slide" template.
-    private function render_slide_fields($index, $slide) {
-        $number = is_numeric($index) ? $index + 1 : '';
+    // Renders one slider's whole editable panel: autoplay/interval + its slide repeater.
+    private function render_slider_panel($slider_id, $slider) {
+        $slides = !empty($slider['slides']) ? $slider['slides'] : array(array());
+        ob_start();
+        ?>
+        <div class="hero-slider-panel" data-slider-id="<?php echo esc_attr($slider_id); ?>">
+            <div class="hs-field-row">
+                <?php echo $this->render_toggle('hero_slider_autoplay_' . $slider_id, 'hero_slider_sliders[' . $slider_id . '][autoplay]', $slider['autoplay'] ?? 0, 'Automatically advance slides'); ?>
+                <label for="hero_slider_interval_<?php echo esc_attr($slider_id); ?>">Autoplay Interval (ms)</label>
+                <input type="number" id="hero_slider_interval_<?php echo esc_attr($slider_id); ?>" name="hero_slider_sliders[<?php echo esc_attr($slider_id); ?>][interval]" min="1000" step="500" value="<?php echo esc_attr($slider['interval'] ?? 4000); ?>" class="small-text" />
+            </div>
+
+            <div class="hero-slider-slides-container">
+                <?php foreach ($slides as $i => $slide): ?>
+                    <?php echo $this->render_slide_fields($slider_id, $i, $slide); ?>
+                <?php endforeach; ?>
+            </div>
+
+            <p>
+                <button type="button" class="button hero-slider-add-slide">+ Add Slide</button>
+            </p>
+
+            <!-- Hidden template used by JS to add new slides to this slider -->
+            <template class="hero-slider-slide-template">
+                <?php echo $this->render_slide_fields($slider_id, '__INDEX__', array()); ?>
+            </template>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    // Renders a single slide's fields, namespaced under its parent slider's id.
+    private function render_slide_fields($slider_id, $index, $slide) {
+        $number      = is_numeric($index) ? $index + 1 : '';
+        $name_prefix = 'hero_slider_sliders[' . $slider_id . '][slides][' . $index . ']';
+        $id_prefix   = 'slide_' . $slider_id . '_' . $index;
         ob_start();
         ?>
         <div class="hero-slide-section">
@@ -316,36 +419,36 @@ class Hero_Slider_Settings {
             <div class="hero-slide-body">
                 <table class="form-table hero-slide-table">
                     <tr>
-                        <th scope="row"><label for="image_url_<?php echo esc_attr($index); ?>">Image URL</label></th>
+                        <th scope="row"><label for="<?php echo esc_attr($id_prefix); ?>_image">Image URL</label></th>
                         <td>
-                            <input type="text" id="image_url_<?php echo esc_attr($index); ?>" name="hero_slider_slides[<?php echo esc_attr($index); ?>][image]" value="<?php echo esc_attr($slide['image'] ?? ''); ?>" class="regular-text hero-slider-image-url" placeholder="Enter image URL" />
+                            <input type="text" id="<?php echo esc_attr($id_prefix); ?>_image" name="<?php echo esc_attr($name_prefix); ?>[image]" value="<?php echo esc_attr($slide['image'] ?? ''); ?>" class="regular-text hero-slider-image-url" placeholder="Enter image URL" />
                             <button type="button" class="button hero-slider-upload-btn">Choose Image</button>
                         </td>
                     </tr>
 
                     <tr>
-                        <th scope="row"><label for="alt_<?php echo esc_attr($index); ?>">Image Alt Text</label></th>
-                        <td><input type="text" id="alt_<?php echo esc_attr($index); ?>" name="hero_slider_slides[<?php echo esc_attr($index); ?>][alt]" value="<?php echo esc_attr($slide['alt'] ?? ''); ?>" class="regular-text" placeholder="Describe the image for accessibility" /></td>
+                        <th scope="row"><label for="<?php echo esc_attr($id_prefix); ?>_alt">Image Alt Text</label></th>
+                        <td><input type="text" id="<?php echo esc_attr($id_prefix); ?>_alt" name="<?php echo esc_attr($name_prefix); ?>[alt]" value="<?php echo esc_attr($slide['alt'] ?? ''); ?>" class="regular-text" placeholder="Describe the image for accessibility" /></td>
                     </tr>
 
                     <tr>
-                        <th scope="row"><label for="heading_<?php echo esc_attr($index); ?>">Heading</label></th>
-                        <td><input type="text" id="heading_<?php echo esc_attr($index); ?>" name="hero_slider_slides[<?php echo esc_attr($index); ?>][heading]" value="<?php echo esc_attr($slide['heading'] ?? ''); ?>" class="regular-text" placeholder="Enter heading" /></td>
+                        <th scope="row"><label for="<?php echo esc_attr($id_prefix); ?>_heading">Heading</label></th>
+                        <td><input type="text" id="<?php echo esc_attr($id_prefix); ?>_heading" name="<?php echo esc_attr($name_prefix); ?>[heading]" value="<?php echo esc_attr($slide['heading'] ?? ''); ?>" class="regular-text" placeholder="Enter heading" /></td>
                     </tr>
 
                     <tr>
-                        <th scope="row"><label for="paragraph_<?php echo esc_attr($index); ?>">Paragraph</label></th>
-                        <td><textarea id="paragraph_<?php echo esc_attr($index); ?>" name="hero_slider_slides[<?php echo esc_attr($index); ?>][paragraph]" rows="4" class="large-text" placeholder="Enter paragraph text"><?php echo esc_textarea($slide['paragraph'] ?? ''); ?></textarea></td>
+                        <th scope="row"><label for="<?php echo esc_attr($id_prefix); ?>_paragraph">Paragraph</label></th>
+                        <td><textarea id="<?php echo esc_attr($id_prefix); ?>_paragraph" name="<?php echo esc_attr($name_prefix); ?>[paragraph]" rows="4" class="large-text" placeholder="Enter paragraph text"><?php echo esc_textarea($slide['paragraph'] ?? ''); ?></textarea></td>
                     </tr>
 
                     <tr>
-                        <th scope="row"><label for="button_text_<?php echo esc_attr($index); ?>">Button Text</label></th>
-                        <td><input type="text" id="button_text_<?php echo esc_attr($index); ?>" name="hero_slider_slides[<?php echo esc_attr($index); ?>][button_text]" value="<?php echo esc_attr($slide['button_text'] ?? ''); ?>" class="regular-text" placeholder="Enter button text" /></td>
+                        <th scope="row"><label for="<?php echo esc_attr($id_prefix); ?>_button_text">Button Text</label></th>
+                        <td><input type="text" id="<?php echo esc_attr($id_prefix); ?>_button_text" name="<?php echo esc_attr($name_prefix); ?>[button_text]" value="<?php echo esc_attr($slide['button_text'] ?? ''); ?>" class="regular-text" placeholder="Enter button text" /></td>
                     </tr>
 
                     <tr>
-                        <th scope="row"><label for="button_link_<?php echo esc_attr($index); ?>">Button Link</label></th>
-                        <td><input type="url" id="button_link_<?php echo esc_attr($index); ?>" name="hero_slider_slides[<?php echo esc_attr($index); ?>][button_link]" value="<?php echo esc_attr($slide['button_link'] ?? ''); ?>" class="regular-text" placeholder="Enter button link" /></td>
+                        <th scope="row"><label for="<?php echo esc_attr($id_prefix); ?>_button_link">Button Link</label></th>
+                        <td><input type="url" id="<?php echo esc_attr($id_prefix); ?>_button_link" name="<?php echo esc_attr($name_prefix); ?>[button_link]" value="<?php echo esc_attr($slide['button_link'] ?? ''); ?>" class="regular-text" placeholder="Enter button link" /></td>
                     </tr>
                 </table>
 

@@ -4,7 +4,7 @@
  * Plugin Name:       Hero Slider with SplideJS
  * Plugin URI:        https://github.com/NxtWebGen1/Hero-Slider-with-SplideJS
  * Description:       Adds a customizable hero slider using SplideJS. Includes a shortcode [hero_slider] to display a responsive slider with image, heading, description, and button. Lightweight and easy to use.
- * Version:           1.4.0
+ * Version:           1.5.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Murslin Shehzad
@@ -79,16 +79,10 @@ function hero_slider_enqueue_assets(){
     wp_enqueue_script( 'splide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/splide.min.js', array(), null, true);
 
     // Depends on splide-js so the Splide library is guaranteed to load first.
+    // Autoplay/interval are no longer passed globally here — each [hero_slider] instance
+    // carries its own slider's settings via data-autoplay/data-interval attributes,
+    // since a page can now show more than one independently-configured slider.
     wp_enqueue_script( 'hero-slide-js', HERO_SLIDER_PLUGIN_URL.'assets/js/hero-slide.js', array('jquery', 'splide-js'), filemtime(HERO_SLIDER_PLUGIN_DIR . 'assets/js/hero-slide.js'), true);
-
-    $general_settings = wp_parse_args(get_option('hero_slider_general_settings'), array(
-        'autoplay' => 0,
-        'interval' => 4000,
-    ));
-    wp_localize_script('hero-slide-js', 'heroSliderSettings', array(
-        'autoplay' => (bool) $general_settings['autoplay'],
-        'interval' => (int) $general_settings['interval'],
-    ));
 }
 
 function hero_slider_admin_styles() {

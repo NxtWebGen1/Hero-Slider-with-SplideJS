@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Hero_Slider_Shortcode{
 
+    // Counter so multiple [hero_slider] instances on the same page each get a
+    // unique element id (Splide needs one per instance for its ARIA wiring).
+    private static $instance_count = 0;
+
     public function __construct(){
         add_shortcode( 'hero_slider', array($this, 'hero_slider_display') );
     }
@@ -30,9 +34,22 @@ class Hero_Slider_Shortcode{
 
     public function hero_slider_display($atts){
 
-        $slides = get_option( 'hero_slider_slides' ); // Get all saved slides
+        $sliders = get_option( 'hero_slider_sliders' );
 
-        if(empty($slides)){
+        if (empty($sliders) || !is_array($sliders)) {
+            return '<p>No slides found. Please add some slides in the settings.</p>';
+        }
+
+        // shortcode_atts() needs 'id' present in $atts up front so it isn't stripped;
+        // resolve which configured slider this instance targets before merging the rest.
+        // array_keys()[0] is used instead of array_key_first() to stay compatible with PHP 7.2.
+        $requested_id = is_array($atts) && isset($atts['id']) ? sanitize_key($atts['id']) : '';
+        $slider_keys  = array_keys($sliders);
+        $slider_id    = ($requested_id && isset($sliders[$requested_id])) ? $requested_id : $slider_keys[0];
+        $slider       = $sliders[$slider_id];
+        $slides       = $slider['slides'] ?? array();
+
+        if (empty($slides)) {
             return '<p>No slides found. Please add some slides in the settings.</p>';
         }
 
@@ -40,6 +57,8 @@ class Hero_Slider_Shortcode{
 
         // Shortcode attributes override the site-wide Appearance defaults for this instance.
         $atts = shortcode_atts(array(
+            'id' => $slider_id,
+
             'heading'   => $appearance['show_heading'] ? 'yes' : 'no',
             'paragraph' => $appearance['show_paragraph'] ? 'yes' : 'no',
             'overlay'   => $appearance['show_overlay'] ? 'yes' : 'no',
@@ -62,7 +81,7 @@ class Hero_Slider_Shortcode{
         $show_paragraph = filter_var($atts['paragraph'], FILTER_VALIDATE_BOOLEAN);
         $show_overlay   = filter_var($atts['overlay'], FILTER_VALIDATE_BOOLEAN);
 
-        $carousel_class = 'splide' . ($show_overlay ? '' : ' hero-slider-no-overlay');
+        $carousel_class = 'hero-main-carousel splide' . ($show_overlay ? '' : ' hero-slider-no-overlay');
 
         $heading_style = $this->build_style_attr(array(
             'color'       => sanitize_hex_color($atts['heading_color']),
@@ -86,11 +105,18 @@ class Hero_Slider_Shortcode{
             'font-family' => $this->sanitize_font_family($atts['button_font_family']),
         ));
 
+        self::$instance_count++;
+        $unique_id = 'hero-slider-' . self::$instance_count;
+        $autoplay  = !empty($slider['autoplay']) ? 1 : 0;
+        $interval  = !empty($slider['interval']) ? absint($slider['interval']) : 4000;
+
         ob_start();
         ?>
 
+        <div class="hero-slider-instance">
+
         <!-- Main Slider  -->
-            <section id="main-carousel" class="<?php echo esc_attr($carousel_class); ?>" aria-label="The main carousel with large slides.">
+            <section id="<?php echo esc_attr($unique_id); ?>-main" class="<?php echo esc_attr($carousel_class); ?>" aria-label="The main carousel with large slides." data-autoplay="<?php echo esc_attr($autoplay); ?>" data-interval="<?php echo esc_attr($interval); ?>">
                 <div class="splide__track">
                     <ul class="splide__list">
                     <?php foreach($slides as $slide): ?>
@@ -119,7 +145,7 @@ class Hero_Slider_Shortcode{
             </section>
 
          <!-- Thumbnail Slider -->
-            <section id="thumbnail-carousel" class="splide">
+            <section id="<?php echo esc_attr($unique_id); ?>-thumbs" class="hero-thumb-carousel splide">
                 <div class="splide__track">
                     <ul class="splide__list">
                         <?php foreach ($slides as $slide): ?>
@@ -133,6 +159,7 @@ class Hero_Slider_Shortcode{
                 </div>
             </section>
 
+        </div>
 
         <?php
                 return ob_get_clean();

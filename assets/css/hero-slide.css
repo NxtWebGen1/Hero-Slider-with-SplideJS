@@ -1,10 +1,10 @@
 /* Main Slide */
-#main-carousel .splide__slide {
+.hero-main-carousel .splide__slide {
     position: relative;
     overflow: hidden;
 }
 
-#main-carousel .splide__slide::after {
+.hero-main-carousel .splide__slide::after {
     content: '';
     position: absolute;
     top: 0;
@@ -16,12 +16,12 @@
 }
 
 /* Disables the dark gradient overlay (via the overlay="no" shortcode attribute or the Appearance setting) */
-#main-carousel.hero-slider-no-overlay .splide__slide::after {
+.hero-main-carousel.hero-slider-no-overlay .splide__slide::after {
     content: none;
 }
 
 /* Slide Content - Hidden by default */
-#main-carousel .slide-content {
+.hero-main-carousel .slide-content {
     position: absolute;
     top: 50%;
     left: 8%;
@@ -34,13 +34,13 @@
 }
 
 /* Animate when slide becomes active */
-#main-carousel .splide__slide.is-active .slide-content {
+.hero-main-carousel .splide__slide.is-active .slide-content {
     transform: translateY(-50%) scale(1);
     opacity: 1;
 }
 
 /* Heading Animation */
-#main-carousel .slide-content h2 {
+.hero-main-carousel .slide-content h2 {
     font-size: 55px;
     font-weight: 800;
     margin-bottom: 15px;
@@ -51,13 +51,13 @@
     transition: all 0.9s ease 0.2s;
 }
 
-#main-carousel .splide__slide.is-active .slide-content h2 {
+.hero-main-carousel .splide__slide.is-active .slide-content h2 {
     transform: translateY(0);
     opacity: 1;
 }
 
 /* Paragraph Animation */
-#main-carousel .slide-content p {
+.hero-main-carousel .slide-content p {
     font-size: 20px;
     margin-bottom: 25px;
     color: #e0e0e0;
@@ -66,7 +66,7 @@
     transition: all 0.9s ease 0.4s;
 }
 
-#main-carousel .splide__slide.is-active .slide-content p {
+.hero-main-carousel .splide__slide.is-active .slide-content p {
     transform: translateY(0);
     opacity: 1;
 }
@@ -87,7 +87,7 @@
     transition: all 0.9s ease 0.6s;
 }
 
-#main-carousel .splide__slide.is-active .slide-content .slide-button {
+.hero-main-carousel .splide__slide.is-active .slide-content .slide-button {
     transform: translateY(0);
     opacity: 1;
 }
@@ -99,11 +99,11 @@
 }
 
 /* Thumbnails */
-#thumbnail-carousel {
+.hero-thumb-carousel {
     margin-top: -150px;
 }
 
-#thumbnail-carousel .splide__slide img {
+.hero-thumb-carousel .splide__slide img {
     height: 90px;
     width: auto;
     object-fit: cover;
@@ -113,7 +113,7 @@
     cursor: pointer;
 }
 
-#thumbnail-carousel .splide__slide.is-active img {
+.hero-thumb-carousel .splide__slide.is-active img {
     border-color: #ff7e5f;
 }
 
@@ -121,32 +121,25 @@
     border: 3px solid rgb(189, 189, 189) !important;
 }
 
-#thumbnail-carousel-list li {
+.hero-thumb-carousel .splide__slide {
     width: 150px !important;
     height: 90px !important;
     margin-right: 0 !important;
 }
 
-
-
-
-
-
-
-
 /* Tablet Devices */
 @media (max-width: 991px) {
-    #main-carousel .slide-content {
+    .hero-main-carousel .slide-content {
         left: 5%;
         max-width: 450px;
         text-align: left;
     }
 
-    #main-carousel .slide-content h2 {
+    .hero-main-carousel .slide-content h2 {
         font-size: 40px;
     }
 
-    #main-carousel .slide-content p {
+    .hero-main-carousel .slide-content p {
         font-size: 18px;
     }
 
@@ -155,23 +148,23 @@
         padding: 12px 25px;
     }
 
-    #thumbnail-carousel .splide__slide img {
+    .hero-thumb-carousel .splide__slide img {
         height: 80px;
     }
 
-    #thumbnail-carousel {
+    .hero-thumb-carousel {
         margin-top: 10px;
     }
-    #thumbnail-carousel-list li {
+
+    .hero-thumb-carousel .splide__slide {
         width: 120px !important;
         height: 80px !important;
     }
-    
 }
 
 /* Mobile Devices */
 @media (max-width: 575px) {
-    #main-carousel .slide-content {
+    .hero-main-carousel .slide-content {
         top: 50%;
         left: 8%;
         transform: translate(-50%, -50%);
@@ -179,12 +172,12 @@
         text-align: left;
     }
 
-    #main-carousel .slide-content h2 {
+    .hero-main-carousel .slide-content h2 {
         font-size: 24px;
         margin-bottom: 10px;
     }
 
-    #main-carousel .slide-content p {
+    .hero-main-carousel .slide-content p {
         font-size: 12px;
         margin-bottom: 15px;
     }
@@ -194,20 +187,17 @@
         padding: 8px 20px;
     }
 
-    #thumbnail-carousel {
+    .hero-thumb-carousel {
         margin-top: 5px;
     }
 
-    #thumbnail-carousel .splide__slide img {
+    .hero-thumb-carousel .splide__slide img {
         height: 60px;
     }
 
-    #thumbnail-carousel-list li {
+    .hero-thumb-carousel .splide__slide {
         width: 80px !important;
         height: 50px !important;
         margin-right: 0 !important;
     }
 }
-
-    
-
