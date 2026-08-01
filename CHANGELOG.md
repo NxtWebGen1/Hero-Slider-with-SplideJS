@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Text inputs, textareas, `<select>` elements, and WP's own `.button` elements (Add/Duplicate/Remove Slide, Choose Image, Copy, New/Delete Slider) weren't styled by the dark-mode toggle at all, since WP admin's built-in styling doesn't know about it — they kept their fixed light appearance regardless of the toggle. Now themed consistently in both modes.
 - Buttons and `<select>` dropdowns used the same subtle background/border as the card they sat on, making them barely distinguishable from their surroundings in both themes; they now use their own more visible control colors, with a clearer hover state
+- `.hero-slide-title-preview` (the live heading preview next to a slide's number) was a flex child with `max-width` + ellipsis truncation but no `min-width: 0` — a classic flexbox gotcha where the browser's default `min-width: auto` overrides `max-width` on a flex item, letting it overflow its row instead of truncating; fixed alongside making the toggle icon and "Slide N" label `flex-shrink: 0` so they're never squeezed
+- Buttons and the slider `<select>` had mismatched heights (WP core `.button` padding/line-height vs. this plugin's custom select padding), causing visible misalignment when sitting side by side; both now share a consistent min-height
+- Added overflow-wrap/word-break safety to card subtitles and the shortcode snippet display so unusually long text (e.g. a long slider ID) wraps instead of overflowing its card
 
 ---
 
