@@ -23,6 +23,13 @@
     --hs-control-bg: #ffffff;
     --hs-control-border: #cabfe9;
 
+    /* Tells the browser to render native controls (select dropdown popups,
+       scrollbars, etc.) using its light UI theme — without this, a select's
+       *closed* box can be styled freely via CSS, but the *open* popup list is
+       drawn natively and otherwise defaults to a mismatched, low-contrast
+       theme guessed by the browser. */
+    color-scheme: light;
+
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--hs-bg);
     color: var(--hs-text);
@@ -34,6 +41,8 @@
 }
 
 .hero-slider-wrap.hs-dark {
+    color-scheme: dark;
+
     --hs-bg: #131320;
     --hs-surface: #1c1c2e;
     --hs-surface-alt: #242438;
@@ -169,6 +178,14 @@
 .hero-slider-wrap select,
 .hero-slider-wrap .button {
     min-height: 34px;
+}
+
+/* Extra insurance for the dropdown popup's <option> list — Firefox honors
+   this directly; Chromium/Edge rely mainly on color-scheme above, but this
+   doesn't hurt there either. */
+.hero-slider-wrap select option {
+    background: var(--hs-control-bg);
+    color: var(--hs-text);
 }
 
 .hero-slider-wrap input[type="text"]::placeholder,

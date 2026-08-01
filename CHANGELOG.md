@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.2] - 2026-08-02
+
+### Fixed
+- A `<select>`'s *open* dropdown popup (e.g. the font-family choices) is drawn natively by the browser and isn't reachable by normal CSS, so it kept using a mismatched, low-contrast default theme even after the select's own closed-box styling was fixed. Declared `color-scheme: light`/`dark` so the browser renders native controls (dropdown popups, scrollbars) in the matching theme, plus explicit `option` styling for extra cross-browser coverage.
+
+---
+
 ## [1.5.1] - 2026-08-02
 
 ### Changed
